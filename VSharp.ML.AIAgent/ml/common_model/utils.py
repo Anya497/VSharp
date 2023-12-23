@@ -63,12 +63,12 @@ def csv2best_models(ref_model_init: t.Callable[[], torch.nn.Module]):
                 )
                 ref_model = load_model(Path(path_to_model), model=ref_model_init())
 
-            ref_model.to(GeneralConfig.DEVICE)
-            best_models[map_name] = (
-                ref_model,
-                best_model_score[map_name],
-                best_model_name,
-            )
+                ref_model.to(GeneralConfig.DEVICE)
+                best_models[map_name] = (
+                    ref_model,
+                    best_model_score[map_name],
+                    best_model_name,
+                )
     return best_models
 
 
@@ -130,10 +130,7 @@ def load_dataset_state_dict(path):
     return dataset_state_dict
 
 
-def get_model(
-    path_to_weights: Path, model_init: t.Callable[[], torch.nn.Module], random_seed: int
-):
-    np.random.seed(random_seed)
+def get_model(path_to_weights: Path, model_init: t.Callable[[], torch.nn.Module]):
     model = model_init()
     weights = torch.load(path_to_weights)
     weights["lin_last.weight"] = torch.tensor(np.random.random([1, 8]))
